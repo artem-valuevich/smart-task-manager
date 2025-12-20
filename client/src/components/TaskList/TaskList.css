@@ -1,0 +1,248 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+     
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f4f8;
+        }
+        
+        .header h1 {
+            color: #2d3748;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            color: #718096;
+            font-size: 16px;
+        }
+        
+        .task-list {
+            list-style: none;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 18px;
+            margin-bottom: 12px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .task-item:hover {
+            border-color: #4f46e5;
+            background: #f0f4ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+        }
+        
+        .task-item.completed {
+            background: #f0fff4;
+            border-color: #48bb78;
+            opacity: 0.9;
+        }
+        
+.checkbox-container {
+    position: relative;
+    margin-right: 20px;
+    cursor: pointer;
+    flex-shrink: 0; /* Запрещаем сжатие */
+}
+        
+        .custom-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            position: relative;
+            background: white;
+        }
+        
+        input[type="checkbox"] {
+            display: none;
+        }
+        
+        input[type="checkbox"]:checked + .custom-checkbox {
+            background: #4f46e5;
+            border-color: #4f46e5;
+        }
+        
+        input[type="checkbox"]:checked + .custom-checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        /* Стили для текста */
+.task-text {
+    flex: 1;
+    color: #2d3748;
+    font-size: 18px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    min-width: 200px; /* Минимальная ширина для текста */
+    margin-right: 15px; /* Отступ от статуса */
+}
+        
+        input[type="checkbox"]:checked ~ .task-text {
+            color: #718096;
+            text-decoration: line-through;
+        }
+        
+        /* Статус задачи */
+.task-status {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0; /* Запрещаем сжатие */
+    order: 2; /* Порядок в flex-контейнере */
+}
+        
+        .task-status.pending {
+            background: #fed7d7;
+            color: #c53030;
+        }
+        
+        .task-status.completed {
+            background: #c6f6d5;
+            color: #276749;
+        }
+        
+        .task-status.in-progress {
+            background: #feebc8;
+            color: #c05621;
+        }
+        
+        /* Категория задачи */
+.task-category {
+    font-size: 12px;
+    color: #718096;
+    background: #edf2f7;
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-top: 8px;
+    margin-left: 44px; /* Выравнивание с текстом */
+    width: fit-content;
+    order: 3; /* Помещаем в конец */
+}
+        
+        /* Счетчик задач */
+        .task-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f4f8;
+            color: #718096;
+            font-size: 16px;
+        }
+        
+        .completed-count {
+            color: #48bb78;
+            font-weight: 600;
+        }
+        
+        .total-count {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        
+        /* Иконки для важных задач */
+        .important-icon {
+            color: #f56565;
+            margin-right: 10px;
+            font-size: 20px;
+            display: none;
+        }
+        
+        input[type="checkbox"][data-important="true"] + .custom-checkbox {
+            border-color: #f56565;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 18px;
+    margin-bottom: 12px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+    position: relative;
+    flex-wrap: wrap; /* Добавляем перенос элементов */
+}
+            
+            .task-status {
+                margin-top: 10px;
+                margin-left: 44px; /* Выравнивание под текстом */
+            }
+            
+            .task-category {
+                position: static;
+                margin-top: 8px;
+                margin-left: 44px;
+                width: fit-content;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+    .task-item {
+        padding: 15px;
+    }
+    
+    .task-text {
+        min-width: 150px; /* Меньшая минимальная ширина для мобильных */
+        margin-right: 10px;
+    }
+    
+    .task-status {
+        margin-left: auto; /* Прижимаем статус к правому краю */
+    }
+    
+    .task-category {
+        margin-left: 44px;
+        margin-top: 10px;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 400px) {
+    .task-text {
+        min-width: 120px;
+        font-size: 16px;
+    }
+    
+    .task-status {
+        padding: 4px 10px;
+        font-size: 12px;
+    }
+}

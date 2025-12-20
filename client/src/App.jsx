@@ -1,8 +1,12 @@
+import DahsboardPage from "./pages/DashboardPage"
+import Header from "./components/Header/Header"
+
 function App() {
 
   return (
     <>
-    <h1>My own app!!!</h1>
+    <Header />
+    <DahsboardPage />
     </>
   )
 }
