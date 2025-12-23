@@ -1,19 +1,24 @@
-import "./Header.css"
+import "./Header.css";
 
 export default function Header() {
-    return <>
-     <header className="site-header">
-        <div className="header-container">
-            <a href="#" className="logo">МойСайт</a>
-            <nav>
-                <ul className="nav-menu">
-                    <li><a href="#">Главная</a></li>
-                    <li><a href="#">О нас</a></li>
-                    <li><a href="#">Услуги</a></li>
-                    <li><a href="#">Контакты</a></li>
-                </ul>
-            </nav>
+  return (
+    <>
+      <div className="header">
+        <div className="header-logo">
+          <div className="logo-icon">✓</div>
+          <div>
+            <div className="logo-text">TaskManager</div>
+            <div className="logo-subtext">Управление задачами</div>
+          </div>
         </div>
-    </header>
+
+        <div className="header-actions">
+          <div className="user-info">
+            <div className="user-avatar">ИИ</div>
+            <span className="user-name">Иван Иванов</span>
+          </div>
+        </div>
+      </div>
     </>
+  );
 }

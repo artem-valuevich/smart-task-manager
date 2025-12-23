@@ -1,0 +1,336 @@
+/* Обновленные стили TaskItem */
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  margin: 0 2rem 12px;
+  background-color: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  gap: 20px;
+}
+
+.task-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
+}
+
+/* Состояния задачи */
+.task-item.completed {
+  opacity: 0.7;
+  background-color: #f9fafb;
+}
+
+.task-item.completed .task-title {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+.task-item.in-progress {
+  border-left: 4px solid #3b82f6;
+}
+
+.task-item.pending {
+  border-left: 4px solid #f59e0b;
+}
+
+/* Основной контент */
+.task-main {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  align-items: flex-start;
+}
+
+.task-content {
+  flex: 1;
+}
+
+.task-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.task-description {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Теги */
+.task-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.task-tag {
+  padding: 4px 10px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.task-tag:hover {
+  background-color: #e5e7eb;
+}
+
+/* Метаданные */
+.task-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.task-status,
+.task-priority,
+.task-due-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Статусы */
+.task-status.completed {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.task-status.in-progress {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.task-status.pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Приоритеты */
+.task-priority.high {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.task-priority.medium {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.task-priority.low {
+  background-color: #ecfdf5;
+  color: #065f46;
+}
+
+.task-priority.critical {
+  background-color: #fef2f2;
+  color: #991b1b;
+  font-weight: 600;
+}
+
+/* Дата выполнения */
+.task-due-date {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.task-due-date.expired {
+  background-color: #fee2e2;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* Кнопки действий */
+.task-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.task-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e5e7eb;
+  background-color: white;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.task-item:hover .task-action-btn {
+  opacity: 1;
+}
+
+.task-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-action-btn.edit:hover {
+  background-color: #dbeafe;
+  border-color: #3b82f6;
+  color: #1d4ed8;
+}
+
+.task-action-btn.delete:hover {
+  background-color: #fee2e2;
+  border-color: #ef4444;
+  color: #dc2626;
+}
+
+/* ==================== ВАЖНО! Стили для чекбокса ==================== */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-right: 16px;
+  cursor: pointer;
+  position: relative;
+}
+
+/* ЭТО ОБЯЗАТЕЛЬНО - скрываем стандартный чекбокс */
+.checkbox-container input[type="checkbox"] {
+  display: none; /* Главное правило */
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* Кастомный чекбокс - ВИДИМЫЙ элемент */
+.custom-checkbox {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #d1d5db;
+  border-radius: 6px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: white;
+  flex-shrink: 0;
+  margin-top: 2px; /* Для выравнивания с текстом */
+}
+
+/* Состояние hover для кастомного чекбокса */
+.checkbox-container:hover .custom-checkbox {
+  border-color: #9ca3af;
+  transform: scale(1.05);
+}
+
+/* Состояние когда чекбокс отмечен */
+.checkbox-container input[type="checkbox"]:checked + .custom-checkbox {
+  background-color: #10b981;
+  border-color: #10b981;
+}
+
+/* Галочка внутри отмеченного чекбокса */
+.checkbox-container input[type="checkbox"]:checked + .custom-checkbox::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Состояние для завершенных задач */
+.task-item.completed .custom-checkbox {
+  background-color: #10b981;
+  border-color: #10b981;
+}
+
+.task-item.completed .custom-checkbox::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Фокус для accessibility */
+.checkbox-container input[type="checkbox"]:focus + .custom-checkbox {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  outline: none;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .task-item {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    margin: 0 1rem 10px;
+  }
+  
+  .task-meta {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 10px;
+    min-width: unset;
+  }
+  
+  .task-status .status-text,
+  .task-priority .priority-text {
+    display: none;
+  }
+  
+  .task-status,
+  .task-priority,
+  .task-due-date {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  
+  .task-actions {
+    margin-top: 4px;
+  }
+  
+  .task-action-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .checkbox-container {
+    margin-right: 12px;
+  }
+  
+  .custom-checkbox {
+    width: 20px;
+    height: 20px;
+  }
+}

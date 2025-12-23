@@ -70,6 +70,8 @@ const mockTasks = [
     status: 'completed',
     priority: 'low',
     tags: ['отдых', 'планирование'],
-    dueDate: '2024-08-01'
+    dueDate: '2025-12-24'
   }
 ];
+
+export default mockTasks;

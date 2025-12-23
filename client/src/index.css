@@ -1,8 +1,41 @@
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            display: flex;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-        }
-        
-   
+h1 {
+  padding: 2rem 2rem 1rem;
+  color: #1f2937;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+input {
+  font-family: inherit;
+  outline: none;
+}
