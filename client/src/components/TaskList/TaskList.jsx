@@ -5,6 +5,7 @@ import data from "../../mock-data.js";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState(data);
+  const [inputValue, setInputValue] = useState("");
 
   const updateItem = (id, updatedData) => {
     setTasks((prevItems) =>
@@ -14,18 +15,22 @@ export default function TaskList() {
     );
   };
 
-  const sortedTasks = [...tasks].sort((a, b) => {
-    const STATUS_ORDER = { "in-progress": 1, todo: 2, completed: 3 };
-    const PRIORITY_ORDER = { high: 1, medium: 2, low: 3 };
+  const sortedTasks = tasks
+    .filter((item) =>
+      item.title.toLowerCase().includes(inputValue.toLowerCase())
+    )
+    .sort((a, b) => {
+      const STATUS_ORDER = { "in-progress": 1, todo: 2, completed: 3 };
+      const PRIORITY_ORDER = { high: 1, medium: 2, low: 3 };
 
-    // Сравниваем статус
-    if (a.status !== b.status) {
-      return STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
-    }
+      // Сравниваем статус
+      if (a.status !== b.status) {
+        return STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
+      }
 
-    // Если статусы равны, сравниваем приоритет
-    return PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
-  });
+      // Если статусы равны, сравниваем приоритет
+      return PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
+    });
 
   return (
     <>
@@ -33,7 +38,9 @@ export default function TaskList() {
         <div className="search-icon">🔍</div>
         <input
           type="text"
+          value={inputValue}
           className="search-input"
+          onChange={(e) => setInputValue(e.target.value)}
           placeholder="Поиск задач..."
         />
       </div>
@@ -46,8 +53,8 @@ export default function TaskList() {
         <span className="counter-icon">✓</span>
         <span>Задач:</span>
         <span className="counter-number">
-          {tasks.filter((task) => task.status === "completed").length}/
-          {tasks.length}
+          {sortedTasks.filter((task) => task.status === "completed").length}/
+          {sortedTasks.length}
         </span>
       </div>
       {/* Контейнер для плиточного отображения */}
