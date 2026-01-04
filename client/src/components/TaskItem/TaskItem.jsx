@@ -8,9 +8,15 @@ import { useEffect, useState } from "react";
 export default function TaskItem({
   task: { _id, title, description, status, priority, tags = [], dueDate },
   updateItem,
+  deleteItem,
 }) {
   const [modalIsOpened, setModalIsOpened] = useState(false);
-
+  const handleDelete = () => {
+    if (window.confirm("Вы уверены, что хотите удалить эту задачу?")) {
+      // Здесь нужно добавить вызов функции удаления
+      deleteItem(_id);
+    }
+  };
   // Первая функция
   const handleCheckboxClick = () => {
     updateItem(_id, {
@@ -27,9 +33,15 @@ export default function TaskItem({
 
   return (
     <>
-      <Modal isOpen={modalIsOpened} onClose={() => setModalIsOpened(false)}>
-        <TaskForm />
-      </Modal>
+      <TaskForm
+        task={{ _id, title, description, status, priority, tags, dueDate }}
+        key={`form-${_id}`}
+        isOpen={modalIsOpened}
+        onClose={() => setModalIsOpened(false)}
+        onSubmit={(updatedTask) => {
+          updateItem(updatedTask._id, updatedTask);
+        }}
+      />
       <li className={`task-item ${status}`}>
         {/* Контейнер для чекбокса и основной информации */}
         <div className="task-main">
@@ -92,7 +104,11 @@ export default function TaskItem({
               >
                 ✏️
               </button>
-              <button className="task-action-btn delete" title="Удалить">
+              <button
+                className="task-action-btn delete"
+                title="Удалить"
+                onClick={handleDelete}
+              >
                 🗑️
               </button>
             </div>

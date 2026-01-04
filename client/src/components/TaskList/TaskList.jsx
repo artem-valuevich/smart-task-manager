@@ -14,7 +14,9 @@ export default function TaskList() {
       )
     );
   };
-
+  const deleteItem = (id) => {
+    setTasks((prevItems) => prevItems.filter((item) => item._id !== id));
+  };
   const sortedTasks = tasks
     .filter((item) =>
       item.title.toLowerCase().includes(inputValue.toLowerCase())
@@ -61,7 +63,12 @@ export default function TaskList() {
       <div className="task-grid-container">
         <ul className="task-grid">
           {sortedTasks.map((task) => (
-            <TaskItem key={task._id} task={task} updateItem={updateItem} />
+            <TaskItem
+              key={task._id}
+              task={task}
+              updateItem={updateItem}
+              deleteItem={deleteItem}
+            />
           ))}
         </ul>
       </div>
