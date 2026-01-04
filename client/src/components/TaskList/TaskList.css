@@ -111,3 +111,42 @@
   font-weight: 700;
   color: #1f2937;
 }
+
+/* Контейнер для плиточного отображения задач */
+.task-grid-container {
+  padding: 0 2rem 2rem;
+}
+
+.task-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Адаптивность для разных размеров экрана */
+@media (max-width: 1200px) {
+  .task-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .task-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .task-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .task-grid-container {
+    padding: 0 1rem 2rem;
+  }
+}

@@ -9,7 +9,6 @@ export default function TaskItem({
   task: { _id, title, description, status, priority, tags = [], dueDate },
   updateItem,
 }) {
-  //const [status, setStatus] = useState(initualStatus);
   const [modalIsOpened, setModalIsOpened] = useState(false);
 
   // Первая функция
@@ -61,40 +60,42 @@ export default function TaskItem({
 
         {/* Боковая панель с метаданными */}
         <div className="task-meta">
-          {/* Статус */}
-          <span
-            className={`task-status ${status}`}
-            onClick={handleStatusChange}
-          >
-            {status === "completed"
-              ? "✓"
-              : status === "in-progress"
-              ? "▶"
-              : "⏳"}
-            <span className="status-text">{status}</span>
-          </span>
-
-          {/* Приоритет */}
-          <span className={`task-priority ${priority}`}>
-            {priority === "high" ? "🔥" : priority === "medium" ? "⚠" : "📌"}
-            <span className="priority-text">{priority}</span>
-          </span>
-
-          {/* Дата выполнения */}
-          <span className="task-due-date">📅 {dueDate}</span>
-
-          {/* Кнопки действий */}
-          <div className="task-actions">
-            <button
-              className="task-action-btn edit"
-              title="Редактировать"
-              onClick={() => setModalIsOpened(true)}
+          {/* Верхний ряд: статус и приоритет */}
+          <div className="meta-row">
+            <span
+              className={`task-status ${status}`}
+              onClick={handleStatusChange}
             >
-              ✏️
-            </button>
-            <button className="task-action-btn delete" title="Удалить">
-              🗑️
-            </button>
+              {status === "completed"
+                ? "✓"
+                : status === "in-progress"
+                ? "▶"
+                : "⏳"}
+              <span className="status-text">{status}</span>
+            </span>
+
+            <span className={`task-priority ${priority}`}>
+              {priority === "high" ? "🔥" : priority === "medium" ? "⚠" : "📌"}
+              <span className="priority-text">{priority}</span>
+            </span>
+          </div>
+
+          {/* Нижний ряд: дата выполнения и кнопки действий */}
+          <div className="meta-row">
+            <span className="task-due-date">📅 {dueDate}</span>
+
+            <div className="task-actions">
+              <button
+                className="task-action-btn edit"
+                title="Редактировать"
+                onClick={() => setModalIsOpened(true)}
+              >
+                ✏️
+              </button>
+              <button className="task-action-btn delete" title="Удалить">
+                🗑️
+              </button>
+            </div>
           </div>
         </div>
       </li>

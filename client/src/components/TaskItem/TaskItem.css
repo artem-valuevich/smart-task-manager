@@ -1,22 +1,23 @@
-/* Обновленные стили TaskItem */
+/* Обновленные стили TaskItem для плиточного отображения */
 .task-item {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
   padding: 20px;
-  margin: 0 2rem 12px;
+  margin: 0;
   background-color: white;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  gap: 20px;
+  gap: 16px;
+  height: 100%;
+  min-height: 200px;
 }
 
 .task-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   border-color: #d1d5db;
 }
 
@@ -49,14 +50,18 @@
 
 .task-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .task-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   color: #1f2937;
-  margin-bottom: 4px;
+  margin: 0;
   line-height: 1.4;
+  word-break: break-word;
 }
 
 .task-description {
@@ -64,6 +69,14 @@
   color: #6b7280;
   margin: 0;
   line-height: 1.5;
+  flex: 1;
+  word-break: break-word;
+  max-height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 /* Теги */
@@ -71,7 +84,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 10px;
+  margin-top: auto;
 }
 
 .task-tag {
@@ -92,9 +105,16 @@
 .task-meta {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  gap: 10px;
+  border-top: 1px solid #f3f4f6;
+  padding-top: 12px;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: 8px;
-  min-width: 200px;
 }
 
 .task-status,
@@ -107,6 +127,9 @@
   border-radius: 20px;
   font-size: 13px;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Статусы */
@@ -151,6 +174,10 @@
 .task-due-date {
   background-color: #f3f4f6;
   color: #4b5563;
+  font-size: 13px;
+  min-width: 0;
+  flex: 1;
+  justify-content: center;
 }
 
 .task-due-date.expired {
@@ -163,7 +190,8 @@
 .task-actions {
   display: flex;
   gap: 8px;
-  margin-top: 8px;
+  justify-content: flex-end;
+  flex-shrink: 0;
 }
 
 .task-action-btn {
@@ -208,6 +236,7 @@
   margin-right: 16px;
   cursor: pointer;
   position: relative;
+  flex-shrink: 0;
 }
 
 /* ЭТО ОБЯЗАТЕЛЬНО - скрываем стандартный чекбокс */
@@ -284,23 +313,29 @@
   outline: none;
 }
 
-/* Адаптивность */
+/* Адаптивность для плиточного отображения */
 @media (max-width: 768px) {
   .task-item {
-    flex-direction: column;
-    gap: 16px;
     padding: 16px;
-    margin: 0 1rem 10px;
+    gap: 14px;
+    min-height: 180px;
   }
   
   .task-meta {
-    flex-direction: row;
+    gap: 8px;
+  }
+  
+  .meta-row {
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    gap: 10px;
-    min-width: unset;
+    gap: 6px;
+  }
+  
+  .task-status,
+  .task-priority,
+  .task-due-date {
+    padding: 5px 10px;
+    font-size: 12px;
+    min-width: 0;
   }
   
   .task-status .status-text,
@@ -308,15 +343,8 @@
     display: none;
   }
   
-  .task-status,
-  .task-priority,
-  .task-due-date {
-    padding: 6px 10px;
-    font-size: 12px;
-  }
-  
   .task-actions {
-    margin-top: 4px;
+    gap: 6px;
   }
   
   .task-action-btn {
@@ -332,5 +360,43 @@
   .custom-checkbox {
     width: 20px;
     height: 20px;
+  }
+  
+  .task-title {
+    font-size: 16px;
+  }
+  
+  .task-description {
+    font-size: 13px;
+    max-height: 52px;
+    -webkit-line-clamp: 2;
+  }
+}
+
+/* Для очень маленьких экранов в плиточном отображении */
+@media (max-width: 480px) {
+  .task-item {
+    min-height: 160px;
+  }
+  
+  .task-meta {
+    padding-top: 10px;
+  }
+  
+  .meta-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .task-status,
+  .task-priority,
+  .task-due-date {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .task-actions {
+    justify-content: center;
+    width: 100%;
   }
 }

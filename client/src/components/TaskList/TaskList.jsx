@@ -50,12 +50,14 @@ export default function TaskList() {
           {tasks.length}
         </span>
       </div>
-      <ul>
-        {sortedTasks.map((task) => (
-          <TaskItem key={task._id} task={task} updateItem={updateItem} />
-        ))}
-        <ul className="task-list" />
-      </ul>
+      {/* Контейнер для плиточного отображения */}
+      <div className="task-grid-container">
+        <ul className="task-grid">
+          {sortedTasks.map((task) => (
+            <TaskItem key={task._id} task={task} updateItem={updateItem} />
+          ))}
+        </ul>
+      </div>
     </>
   );
 }
