@@ -45,7 +45,10 @@ export default function TaskList() {
       <div className="task-counter">
         <span className="counter-icon">✓</span>
         <span>Задач:</span>
-        <span className="counter-number">5/12</span>
+        <span className="counter-number">
+          {tasks.filter((task) => task.status === "completed").length}/
+          {tasks.length}
+        </span>
       </div>
       <ul>
         {sortedTasks.map((task) => (
