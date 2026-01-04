@@ -1,47 +1,34 @@
-import { Children } from "react";
-import Modal from "../Modal/Modal";
-import TaskForm from "../TaskForm/TaskForm";
-
 import "./TaskItem.css";
-import { useEffect, useState } from "react";
-
 export default function TaskItem({
   task: { _id, title, description, status, priority, tags = [], dueDate },
   updateItem,
   deleteItem,
+  onEdit,
 }) {
-  const [modalIsOpened, setModalIsOpened] = useState(false);
   const handleDelete = () => {
     if (window.confirm("Вы уверены, что хотите удалить эту задачу?")) {
-      // Здесь нужно добавить вызов функции удаления
       deleteItem(_id);
     }
   };
-  // Первая функция
+
   const handleCheckboxClick = () => {
     updateItem(_id, {
       status: status === "completed" ? "in-progress" : "completed",
     });
   };
 
-  // Вторая функция
   const handleStatusChange = () => {
     updateItem(_id, {
       status: status === "in-progress" ? "todo" : "in-progress",
     });
   };
 
+  const handleEditClick = () => {
+    onEdit(_id); // Только ID!
+  };
+
   return (
     <>
-      <TaskForm
-        task={{ _id, title, description, status, priority, tags, dueDate }}
-        key={`form-${_id}`}
-        isOpen={modalIsOpened}
-        onClose={() => setModalIsOpened(false)}
-        onSubmit={(updatedTask) => {
-          updateItem(updatedTask._id, updatedTask);
-        }}
-      />
       <li className={`task-item ${status}`}>
         {/* Контейнер для чекбокса и основной информации */}
         <div className="task-main">
@@ -100,7 +87,7 @@ export default function TaskItem({
               <button
                 className="task-action-btn edit"
                 title="Редактировать"
-                onClick={() => setModalIsOpened(true)}
+                onClick={handleEditClick}
               >
                 ✏️
               </button>

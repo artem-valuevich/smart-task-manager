@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TaskItem from "../TaskItem/TaskItem";
+import TaskForm from "../TaskForm/TaskForm";
 import "./TaskList.css";
 import data from "../../mock-data.js";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState(data);
   const [inputValue, setInputValue] = useState("");
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [currentTask, setCurrentTask] = useState(null); // null = создание, объект = редактирование
 
   const updateItem = (id, updatedData) => {
     setTasks((prevItems) =>
@@ -13,10 +16,46 @@ export default function TaskList() {
         item._id === id ? { ...item, ...updatedData } : item
       )
     );
+    setIsFormOpen(false);
+    setCurrentTask(null);
   };
+
   const deleteItem = (id) => {
     setTasks((prevItems) => prevItems.filter((item) => item._id !== id));
   };
+
+  const addNewTask = (newTask) => {
+    // Генерируем уникальный ID для новой задачи
+    const taskWithId = {
+      ...newTask,
+      _id: Date.now().toString(), // или используйте uuid/v4
+    };
+    setTasks((prevTasks) => [...prevTasks, taskWithId]);
+    setIsFormOpen(false);
+    setCurrentTask(null);
+  };
+
+  const handleEditClick = (taskId) => {
+    const taskToEdit = tasks.find((task) => task._id === taskId);
+    setCurrentTask(taskToEdit);
+    setIsFormOpen(true);
+  };
+
+  const handleFormSubmit = (taskData) => {
+    if (currentTask) {
+      // Редактирование существующей задачи
+      updateItem(taskData._id, taskData);
+    } else {
+      // Создание новой задачи
+      addNewTask(taskData);
+    }
+  };
+
+  const handleFormClose = () => {
+    setIsFormOpen(false);
+    setCurrentTask(null);
+  };
+
   const sortedTasks = tasks
     .filter((item) =>
       item.title.toLowerCase().includes(inputValue.toLowerCase())
@@ -36,6 +75,14 @@ export default function TaskList() {
 
   return (
     <>
+      {/* Единая форма для создания и редактирования */}
+      <TaskForm
+        task={currentTask} // null = новая задача, объект = редактирование
+        isOpen={isFormOpen}
+        onClose={handleFormClose}
+        onSubmit={handleFormSubmit}
+      />
+
       <div className="search-container">
         <div className="search-icon">🔍</div>
         <input
@@ -47,10 +94,18 @@ export default function TaskList() {
         />
       </div>
 
-      <button className="header-button secondary" data-short="+">
+      <button
+        className="header-button secondary"
+        data-short="+"
+        onClick={() => {
+          setCurrentTask(null); // Устанавливаем, что создаём новую задачу
+          setIsFormOpen(true);
+        }}
+      >
         <span>➕</span>
         <span>Новая задача</span>
       </button>
+
       <div className="task-counter">
         <span className="counter-icon">✓</span>
         <span>Задач:</span>
@@ -59,6 +114,7 @@ export default function TaskList() {
           {sortedTasks.length}
         </span>
       </div>
+
       {/* Контейнер для плиточного отображения */}
       <div className="task-grid-container">
         <ul className="task-grid">
@@ -68,6 +124,7 @@ export default function TaskList() {
               task={task}
               updateItem={updateItem}
               deleteItem={deleteItem}
+              onEdit={handleEditClick} // Передаем функцию редактирования
             />
           ))}
         </ul>
