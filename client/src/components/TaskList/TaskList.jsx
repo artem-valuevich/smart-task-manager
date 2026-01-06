@@ -1,53 +1,78 @@
 import { useState, useEffect } from "react";
 import TaskItem from "../TaskItem/TaskItem";
 import TaskForm from "../TaskForm/TaskForm";
+import useTaskAPI from "../../hooks/useTaskAPI";
 import "./TaskList.css";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [currentTask, setCurrentTask] = useState(null); // null = создание, объект = редактирование
+  const [currentTask, setCurrentTask] = useState(null);
 
+  const {
+    isLoading,
+    error,
+    clearError,
+    fetchTasks,
+    updateTask,
+    deleteTask,
+    createTask,
+  } = useTaskAPI();
+
+  // Загрузка задач при монтировании
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("http://localhost:3000/api");
-      const data = await res.json();
+    const loadTasks = async () => {
+      const data = await fetchTasks();
       setTasks(data);
     };
-    fetchData();
+    loadTasks();
   }, []);
 
-  const updateItem = (id, updatedData) => {
+  const updateItem = async (id, updatedData) => {
+    const updatedTask = await updateTask(id, updatedData);
+    // Обновляем локальное состояние
     setTasks((prevItems) =>
       prevItems.map((item) =>
-        item._id === id ? { ...item, ...updatedData } : item
+        item._id === id ? { ...item, ...updatedTask } : item
       )
     );
     setIsFormOpen(false);
     setCurrentTask(null);
   };
 
-  const deleteItem = (id) => {
+  const deleteItem = async (id) => {
+    await deleteTask(id);
+    // Если сервер успешно удалил задачу, обновляем локальное состояние
     setTasks((prevItems) => prevItems.filter((item) => item._id !== id));
   };
 
   const addNewTask = async (newTask) => {
-    // Генерируем уникальный ID для новой задачи
-    const taskWithId = {
-      ...newTask,
-      _id: Date.now().toString(), // или используйте uuid/v4
-    };
-    setTasks((prevTasks) => [...prevTasks, taskWithId]);
-    const response = await fetch("http://localhost:3000/api", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(taskWithId),
-    });
-    const responseText = await response.text();
-    console.log(responseText);
-    setIsFormOpen(false);
-    setCurrentTask(null);
+    let tempId; // Для оптимистичного обновления
+
+    try {
+      // Оптимистичное обновление UI
+      tempId = Date.now().toString();
+      const taskWithTempId = { ...newTask, _id: tempId };
+      setTasks((prevTasks) => [...prevTasks, taskWithTempId]);
+
+      // Отправляем запрос на сервер
+      const savedTask = await createTask(newTask);
+
+      // Обновляем задачу с реальным ID с сервера
+      setTasks((prevTasks) =>
+        prevTasks.map((task) => (task._id === tempId ? savedTask : task))
+      );
+      setIsFormOpen(false);
+      setCurrentTask(null);
+    } catch (err) {
+      // Откатываем оптимистичное обновление в случае ошибки
+      if (tempId) {
+        setTasks((prevTasks) =>
+          prevTasks.filter((task) => task._id !== tempId)
+        );
+      }
+    }
   };
 
   const handleEditClick = (taskId) => {
@@ -79,23 +104,20 @@ export default function TaskList() {
       const STATUS_ORDER = { "in-progress": 1, todo: 2, completed: 3 };
       const PRIORITY_ORDER = { high: 1, medium: 2, low: 3 };
 
-      // Сравниваем статус
       if (a.status !== b.status) {
         return STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
       }
-
-      // Если статусы равны, сравниваем приоритет
       return PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
     });
 
   return (
     <>
-      {/* Единая форма для создания и редактирования */}
       <TaskForm
-        task={currentTask} // null = новая задача, объект = редактирование
+        task={currentTask}
         isOpen={isFormOpen}
         onClose={handleFormClose}
         onSubmit={handleFormSubmit}
+        isLoading={isLoading}
       />
 
       <div className="search-container">
@@ -113,9 +135,10 @@ export default function TaskList() {
         className="header-button secondary"
         data-short="+"
         onClick={() => {
-          setCurrentTask(null); // Устанавливаем, что создаём новую задачу
+          setCurrentTask(null);
           setIsFormOpen(true);
         }}
+        disabled={isLoading}
       >
         <span>➕</span>
         <span>Новая задача</span>
@@ -130,7 +153,19 @@ export default function TaskList() {
         </span>
       </div>
 
-      {/* Контейнер для плиточного отображения */}
+      {error && (
+        <div className="error-message">
+          {error}
+          <button onClick={clearError}>✕</button>
+        </div>
+      )}
+
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
+
       <div className="task-grid-container">
         <ul className="task-grid">
           {sortedTasks.map((task) => (
@@ -139,7 +174,8 @@ export default function TaskList() {
               task={task}
               updateItem={updateItem}
               deleteItem={deleteItem}
-              onEdit={handleEditClick} // Передаем функцию редактирования
+              onEdit={handleEditClick}
+              isLoading={isLoading}
             />
           ))}
         </ul>
