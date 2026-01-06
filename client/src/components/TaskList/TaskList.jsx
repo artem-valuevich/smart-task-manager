@@ -2,21 +2,19 @@ import { useState, useEffect } from "react";
 import TaskItem from "../TaskItem/TaskItem";
 import TaskForm from "../TaskForm/TaskForm";
 import "./TaskList.css";
-import data from "../../mock-data.js";
-
-const fetchData = async () => {
-  const res = await fetch("http://localhost:3000/api");
-  const text = await res.json();
-  console.log(text.name);
-};
 
 export default function TaskList() {
-  const [tasks, setTasks] = useState(data);
+  const [tasks, setTasks] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState(null); // null = создание, объект = редактирование
 
   useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch("http://localhost:3000/api");
+      const data = await res.json();
+      setTasks(data);
+    };
     fetchData();
   }, []);
 
@@ -34,13 +32,20 @@ export default function TaskList() {
     setTasks((prevItems) => prevItems.filter((item) => item._id !== id));
   };
 
-  const addNewTask = (newTask) => {
+  const addNewTask = async (newTask) => {
     // Генерируем уникальный ID для новой задачи
     const taskWithId = {
       ...newTask,
       _id: Date.now().toString(), // или используйте uuid/v4
     };
     setTasks((prevTasks) => [...prevTasks, taskWithId]);
+    const response = await fetch("http://localhost:3000/api", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(taskWithId),
+    });
+    const responseText = await response.text();
+    console.log(responseText);
     setIsFormOpen(false);
     setCurrentTask(null);
   };
