@@ -1,14 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TaskItem from "../TaskItem/TaskItem";
 import TaskForm from "../TaskForm/TaskForm";
 import "./TaskList.css";
 import data from "../../mock-data.js";
+
+const fetchData = async () => {
+  const res = await fetch("http://localhost:3000/api");
+  const text = await res.json();
+  console.log(text.name);
+};
 
 export default function TaskList() {
   const [tasks, setTasks] = useState(data);
   const [inputValue, setInputValue] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState(null); // null = создание, объект = редактирование
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const updateItem = (id, updatedData) => {
     setTasks((prevItems) =>
